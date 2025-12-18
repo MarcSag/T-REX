@@ -1,37 +1,37 @@
 # T-REX: Template-based Radiomics Extraction Pipeline
 
-**T-REX** (The Radiomics Extractor) est un pipeline Python modulable pour automatiser l'extraction de caractéristiques radiomiques à partir d'images médicales. Ce pipeline inclut les étapes suivantes :
-- Conversion des images DICOM au format NIfTI.
-- Extraction des métadonnées provenant des fichiers convertis.
-- Génération de masques cérébraux avec **HD-BET**.
-- Recalage et enregistrement d'atlas sur des images avec ou sans cerveau.
-- Extraction de caractéristiques radiomiques basées sur des ROI personnalisées, masques cérébraux ou régions d'atlas.
+**T-REX** (The Radiomics Extractor) is a modular Python pipeline designed to automate radiomics feature extraction from medical imaging. This pipeline includes the following steps:
+- Conversion of DICOM images to NIfTI format.
+- Extraction of metadata from converted files.
+- Brain mask generation using **HD-BET**.
+- Registration of templates and atlases on brain or whole-head images.
+- Radiomics feature extraction based on custom ROIs, brain masks, or atlas regions.
 
 ---
 
-## Fonctionnalités principales
+## Key Features
 
-- Automatisation complète des pipelines combinant DICOM vers NIfTI, recalage, et extraction radiomique.
-- Prise en charge de multiples types de sources : DICOM ou NIfTI.
-- Extraction des métadonnées des images d'entrée et enregistrement sous format `.json`.
-- Segmentation cérébrale spécifique via **HD-BET** pour permettre des analyses ciblées.
-- Compatibilité avec des atlas anatomiques pour délimiter des régions (e.g., lobe occipital, ventricules) et extraire automatiquement des caractéristiques radiomiques.
-- Enregistrement des résultats sous format CSV contenant toutes les caractéristiques radiomiques.
+- Full automation of pipelines combining DICOM to NIfTI conversion, registration, and radiomics extraction.
+- Support for multiple input types: DICOM and NIfTI.
+- Extraction of metadata from input images, saved as `.json` files.
+- Brain-specific segmentation using **HD-BET** for focused analyses.
+- Compatibility with anatomical atlases to define regions (e.g., occipital lobe, ventricles) and extract radiomics features from them.
+- Results are saved as comprehensive CSV files containing all radiomics features.
 
 ---
 
-## Prérequis
+## Requirements
 
-### Logiciels
+### Software
 - **Python ≥ 3.7**
-- Logiciels externes :
-  - `dcm2niix` : Conversion DICOM → NIfTI, avec extraction des métadonnées.
-  - `hd-bet` : Génération de masques cérébraux.
-  - [FSL FLIRT](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FLIRT) : Outils de recalage.
-  - [ANTs Registration](http://stnava.github.io/ANTs/) : Enregistrement des atlas/templates.
+- External tools:
+  - `dcm2niix`: DICOM to NIfTI conversion, with metadata extraction.
+  - `hd-bet`: Brain mask generation.
+  - [FSL FLIRT](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FLIRT): Registration tools.
+  - [ANTs Registration](http://stnava.github.io/ANTs/): Template/atlas registration.
 
-### Librairies Python
-Assurez-vous de disposer des bibliothèques suivantes (ou installez-les via `requirements.txt`) :
+### Python Libraries
+Ensure the following libraries are installed (or install them via `requirements.txt`):
 - pandas
 - numpy
 - nibabel
@@ -44,87 +44,87 @@ Assurez-vous de disposer des bibliothèques suivantes (ou installez-les via `req
 
 ## Installation
 
-1. Clonez ce dépôt GitHub :
+1. Clone this GitHub repository:
    ```bash
-   git clone https://github.com/votre-utilisateur/T-REX.git
+   git clone https://github.com/your-username/T-REX.git
    cd T-REX
    ```
 
-2. Installez les dépendances Python :
+2. Install Python dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Assurez-vous que `dcm2niix`, `hd-bet`, et les autres logiciels nécessaires (ANTs, FSL) sont installés et accessibles via le PATH de votre système.
+3. Verify that `dcm2niix`, `hd-bet`, and other required external software (ANTs, FSL) are installed and available in your system PATH.
 
 ---
 
-## Utilisation
+## Usage
 
-### Pour exécuter le pipeline sur une image unique :
+### Run the pipeline on a single image:
 
 ```bash
-python trex.py --input <chemin_image> --output <dossier_sortie> [options]
+python trex.py --input <image_path> --output <output_directory> [options]
 ```
 
-#### Arguments requis :
-- `<chemin_image>` : Chemin vers une image DICOM ou NIfTI.
-- `<dossier_sortie>` : Répertoire où les résultats seront enregistrés.
+#### Required arguments:
+- `<image_path>`: Path to a DICOM or NIfTI image.
+- `<output_directory>`: Directory where the results will be saved.
 
-#### Arguments optionnels (processus) :
-- `--metadata` : Active l'extraction des métadonnées des images. Génère un fichier `.json`.
-- `--bet` : Effectue la segmentation cérébrale via HD-BET.
-- `--register` : Recalage d'un atlas/template. Nécessite `--bet`.
-- `--radiomics` : Extraction de caractéristiques radiomiques (atlas, ROI, etc.).
-- `--roi` : Spécifiez un ou plusieurs masques personnalisés pour des ROIs au format NIfTI.
+#### Optional arguments (processing steps):
+- `--metadata`: Enables metadata extraction from images. Generates a `.json` file.
+- `--bet`: Performs brain segmentation using HD-BET.
+- `--register`: Registers a template/atlas to the image. Requires `--bet`.
+- `--radiomics`: Extracts radiomics features (for atlas regions, ROIs, etc.).
+- `--roi`: Specify one or more custom NIfTI masks for ROIs.
 
 ---
 
-### Comportement par défaut :
-Si aucun argument autre que `--input` et `--output` n'est fourni, le pipeline exécutera toutes les étapes disponibles.
+### Default Behavior:
+If no specific arguments other than `--input` and `--output` are provided, the pipeline will execute **all available steps**.
 
-#### Exemple :
+#### Example:
 ```bash
 python trex.py --input image.dcm --output results/
 ```
 
-Ce processus effectue :
-1. Conversion DICOM → NIfTI.
-2. Extraction des métadonnées.
-3. Génération d'un masque cérébral.
-4. Recalage Template/Atlas.
-5. Extraction des caractéristiques radiomiques.
+This will perform:
+1. DICOM to NIfTI conversion.
+2. Metadata extraction.
+3. Brain mask generation.
+4. Template/Atlas registration.
+5. Radiomics feature extraction.
 
 ---
 
-## Structure de sortie
+## Output Structure
 
-### Organisation des fichiers de sortie
+### Organization of Output Files
 
-Les résultats sont enregistrés de manière structurée dans le dossier spécifié (`--output`), en fonction des étapes exécutées.
+Results are stored in the specified output directory (`--output`), organized based on the steps performed:
 
-| Étape                     | Fichiers générés                                                              |
-|---------------------------|------------------------------------------------------------------------------|
-| **Conversion**            | `image.nii.gz` : Fichier NIfTI converti.                                     |
-| **Métadonnées**           | `image.json` : Métadonnées extraites au format JSON.                        |
-| **Segmentation cérébrale** | `image_bet_mask.nii.gz` : Masque cérébral généré par HD-BET.                 |
-| **Recalage**              | `image_registered_atlas.nii.gz` : Atlas recalé.                              |
-| **Radiomics**             | `image_radiomics_features.csv` : Caractéristiques radiomiques par région (Atlas/ROI). |
+| Step                    | Generated Files                                                             |
+|-------------------------|-----------------------------------------------------------------------------|
+| **Conversion**          | `image.nii.gz`: Converted NIfTI file.                                       |
+| **Metadata Extraction** | `image.json`: Extracted metadata in JSON format.                           |
+| **Brain Segmentation**  | `image_bet_mask.nii.gz`: Brain mask generated by HD-BET.                   |
+| **Registration**        | `image_registered_atlas.nii.gz`: Registered atlas.                         |
+| **Radiomics Extraction**| `image_radiomics_features.csv`: Radiomics features by region (Atlas/ROIs).  |
 
 ---
 
-## Exemple de structure du CSV de sortie
+## Example: CSV Output Structure
 
-Les fichiers CSV de sortie contiennent les colonnes suivantes selon les étapes effectuées :
+The output CSV files contain the following columns depending on the steps performed:
 
-| **Colonne**           | **Description**                                           |
-|-----------------------|-----------------------------------------------------------|
-| `Image`               | Nom de l'image d'entrée.                                  |
-| `Source`              | Source des caractéristiques (`brain_mask`, `atlas`, `input_roi`). |
-| `region_name`         | Nom de la région ou du masque utilisé.                    |
-| **Caractéristiques**  | `original_shape_VoxelVolume`, `original_glcm_Correlation`, etc. |
+| **Column**         | **Description**                                              |
+|-------------------|--------------------------------------------------------------|
+| `Image`           | Name of the input image.                                     |
+| `Source`          | Source of the extracted features (`brain_mask`, `atlas`, etc.). |
+| `region_name`     | Name of the region or mask used.                             |
+| **Features**      | `original_shape_VoxelVolume`, `original_glcm_Correlation`, etc. |
 
-#### Exemple :
+#### Example CSV:
 ```csv
 Image,Source,region_name,atlas_region_label,original_firstorder_Mean,original_shape_VoxelVolume
 image1,brain_mask,Brain Mask,,12.3,152000
@@ -134,30 +134,30 @@ image1,input_roi,Custom_ROI_1,,20.4,50000
 
 ---
 
-## Développement
+## Development
 
-### Pour les auteurs et collaborateurs :
-- **Code principal** : `trex.py` (logique de pipeline).
-- **Modules** :
-  - `dicom_nii_converter.py` : Conversion DICOM vers NIfTI.
-  - `metadata_extractor.py` : Extraction des metadonnées DICOM.
-  - `radiomics_extractor.py` : Extraction des caractéristiques radiomiques.
-  - `brain_extractor.py` : Génération de masques cérébraux.
-  - `atlas_register.py` : Recalage des atlas/templates.
-
----
-
-## Licence
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+### For contributors and developers:
+- **Main script**: `trex.py` (pipeline logic).
+- **Modules**:
+  - `dicom_nii_converter.py`: Handles DICOM to NIfTI conversion.
+  - `metadata_extractor.py`: Extracts metadata from DICOM files.
+  - `radiomics_extractor.py`: Extracts radiomics features.
+  - `brain_extractor.py`: Generates brain masks.
+  - `atlas_register.py`: Manages template/atlas registration.
 
 ---
 
-## Auteurs
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
+
+---
+
+## Authors
 
 - **Marc Saghiah**
 - **Benjamin Lemasson**
 
-Pour toute question ou suggestion, n'hésitez pas à nous contacter.
+For any questions or suggestions, feel free to contact us.
 
 ---
