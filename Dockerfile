@@ -1,29 +1,39 @@
-# Base image: Python lightweight version
-FROM python:3.8-slim
+# Use an official Python image as the base
+FROM python:3.10-slim
 
-# Environment variables to prevent .pyc files and enable immediate output display
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/root/.local/bin:$PATH"
 
-# Set the working directory
+# Define the working directory in the container
 WORKDIR /app
 
-# Install system-level dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     dcm2niix \
-    libgl1 \
-    libgomp1 && \
-    rm -rf /var/lib/apt/lists/*
+    fsl-core \
+    ants \
+    curl \
+    git \
+    libglib2.0-0 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip and install Python dependencies
-COPY requirements.txt /app/requirements.txt
-RUN pip install --upgrade pip && pip install -r /app/requirements.txt
-
-# Install HD-BET separately (via pip)
+# Install HD-BET (as an example for external dependencies)
 RUN pip install hd-bet
 
-# Copy project files into the container
-COPY . /app
+# Copy the requirements.txt and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Default entrypoint
-ENTRYPOINT ["python", "trex.py"]
+# Copy the entire T-REX project into the container
+COPY . .
+
+# Set the default working directory for the container
+WORKDIR /app
+
+# Expose a port (if needed, e.g., for a service/API)
+EXPOSE 8000
+
+# Specify the default command for the container
+CMD ["python", "trex.py", "--help"]
