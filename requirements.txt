@@ -1,0 +1,8 @@
+pandas==1.5.3
+numpy==1.23.5
+nibabel==5.0.0
+SimpleITK==2.2.1
+PyRadiomics==3.0.1
+nipype==1.8.5
+antspyx==0.3.2
+hd-bet==1.0.1
