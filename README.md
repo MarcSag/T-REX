@@ -77,7 +77,6 @@ python trex.py --input <chemin_image> --output <dossier_sortie> [options]
 - `--register` : Recalage d'un atlas/template. Nécessite `--bet`.
 - `--radiomics` : Extraction de caractéristiques radiomiques (atlas, ROI, etc.).
 - `--roi` : Spécifiez un ou plusieurs masques personnalisés pour des ROIs au format NIfTI.
-- `--atlas_labels` : Chemin vers un fichier CSV contenant les labels des régions de l'atlas (par défaut : `atlas/atlas_anat_labels.csv`).
 
 ---
 
