@@ -23,7 +23,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.7",  # Version Python minimale requise pour T-REX
+    python_requires=">=3.10",  # Version Python minimale requise pour T-REX
     install_requires=[
         "numpy==1.23.5",
         "pandas==1.5.3",
