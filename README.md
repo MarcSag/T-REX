@@ -1,4 +1,4 @@
-# T-REX: Template-based Radiomics Extraction Pipeline
+# T-REX: The Radiomics Extraction Pipeline
 
 **T-REX** (The Radiomics Extractor) is a modular Python pipeline designed to automate radiomics feature extraction from medical imaging. This pipeline includes the following steps:
 - Conversion of DICOM images to NIfTI format.
