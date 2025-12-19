@@ -101,7 +101,7 @@ def main():
     check_dependency("flirt", "FSL FLIRT")
     check_dependency("antsRegistration", "ANTs tools")
 
-    parser = argparse.ArgumentParser(description="T-REX: Template-based Radiomics Extraction Pipeline")
+    parser = argparse.ArgumentParser(description="T-REX: The Radiomics Extractor")
     parser.add_argument("--input", type=str, required=True)
     parser.add_argument("--output", type=str, required=True)
     parser.add_argument("--roi", nargs="*", default="no")
